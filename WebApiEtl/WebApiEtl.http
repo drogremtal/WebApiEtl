@@ -1,0 +1,6 @@
+@WebApiEtl_HostAddress = http://localhost:5279
+
+GET {{WebApiEtl_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
