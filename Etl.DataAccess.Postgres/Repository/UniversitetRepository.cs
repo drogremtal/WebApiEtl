@@ -1,10 +1,5 @@
 ﻿using Etl.DataAccess.Postgres.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Etl.DataAccess.Postgres.Repository
 {
@@ -12,7 +7,7 @@ namespace Etl.DataAccess.Postgres.Repository
     {
         private readonly DefaultDbContext _defaultDbContext = defaultDbContext;
 
-        public async Task<List<UniversitetEntity>> Get()
+        public async Task<List<UniversitetEntity>> GetAll()
         {
             return await _defaultDbContext.Universities
                 .AsNoTracking()
@@ -44,7 +39,7 @@ namespace Etl.DataAccess.Postgres.Repository
 
             if (!string.IsNullOrEmpty(Country))
             {
-                query  =query.Where(q => q.Country.Contains(Country));
+                query = query.Where(q => q.Country.Contains(Country));
             }
 
             return await query.ToListAsync();
@@ -57,7 +52,7 @@ namespace Etl.DataAccess.Postgres.Repository
             query = query.AsNoTracking()
                 .Skip((page-1)*count)
                 .Take(count);
-            
+
             return await query.ToListAsync();
         }
 
@@ -66,6 +61,29 @@ namespace Etl.DataAccess.Postgres.Repository
         {
             await _defaultDbContext.AddAsync(universitetEntity);
             await _defaultDbContext.SaveChangesAsync();
+        }
+
+        public async Task Update(UniversitetEntity UpdateEntity)
+        {
+
+            await _defaultDbContext.Universities
+                .Where(q => q.Id == UpdateEntity.Id)
+                .ExecuteUpdateAsync(s => s
+                .SetProperty(q => q.StateProvince, UpdateEntity.StateProvince)
+                .SetProperty(q => q.webPageEntities, UpdateEntity.webPageEntities)
+                .SetProperty(q => q.domainEntities, UpdateEntity.domainEntities)
+                .SetProperty(q => q.AphaTwoCode, UpdateEntity.AphaTwoCode)
+                .SetProperty(q => q., UpdateEntity.AphaTwoCode));
+
+        }
+
+        public async Task Delete(UniversitetEntity UpdateEntity)
+        {
+
+            await _defaultDbContext.Universities
+                .Where(q => q.Id == UpdateEntity.Id)
+                .ExecuteDeleteAsync();
+
         }
 
 
