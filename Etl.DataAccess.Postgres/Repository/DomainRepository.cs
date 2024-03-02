@@ -30,7 +30,6 @@ namespace Etl.DataAccess.Postgres.Repository
 
         public async Task Update(DomainEntity domainEntity)
         {
-
             await _defaultDbContext.Domains
                 .Where(q => q.Id == domainEntity.Id)
                 .ExecuteUpdateAsync(s => s

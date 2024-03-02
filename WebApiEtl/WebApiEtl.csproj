@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Etl.Core\Etl.Core.csproj" />
     <ProjectReference Include="..\Etl.DataAccess.Postgres\Etl.DataAccess.Postgres.csproj" />
   </ItemGroup>
 

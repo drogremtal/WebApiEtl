@@ -9,7 +9,7 @@ namespace Etl.DataAccess.Postgres.Model
     public class WebPageEntity
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public Guid UniversitetId { get; set; }
         public UniversitetEntity Universitet { get; set; } = new UniversitetEntity();
     }

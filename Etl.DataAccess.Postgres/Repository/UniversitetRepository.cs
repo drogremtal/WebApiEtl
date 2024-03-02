@@ -1,20 +1,21 @@
 ﻿using Etl.DataAccess.Postgres.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Etl.DataAccess.Postgres.Repository
 {
-    public class UniversitetsRepository(DefaultDbContext defaultDbContext)
+    public class UniversitetsRepository(DefaultDbContext defaultDbContext) : IUniversitetsRepository
     {
         private readonly DefaultDbContext _defaultDbContext = defaultDbContext;
 
-        public async Task<List<UniversitetEntity>> GetAll()
+        public async Task<List<UniversitetEntity>> GetAllAsync()
         {
             return await _defaultDbContext.Universities
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<List<UniversitetEntity>> GetWithDomain()
+        public async Task<List<UniversitetEntity>> GetWithDomainAsync()
         {
             return await _defaultDbContext.Universities
                 .AsNoTracking()
@@ -22,71 +23,40 @@ namespace Etl.DataAccess.Postgres.Repository
                 .ToListAsync();
         }
 
-        public async Task<UniversitetEntity?> GetUniversitetById(Guid id)
+        public async Task<UniversitetEntity?> GetByIdAsync(Guid id)
         {
             return await _defaultDbContext.Universities.FirstOrDefaultAsync(q => q.Id == id);
         }
 
-
-        public async Task<List<UniversitetEntity>> GetUniversitetEntityAsync(string Name, string Country)
-        {
-            var query = _defaultDbContext.Universities.AsNoTracking();
-
-            if (!string.IsNullOrEmpty(Name))
-            {
-                query = query.Where(q => q.Name.Contains(Name));
-            }
-
-            if (!string.IsNullOrEmpty(Country))
-            {
-                query = query.Where(q => q.Country.Contains(Country));
-            }
-
-            return await query.ToListAsync();
-        }
-
-        public async Task<List<UniversitetEntity>> GetByPage(int page, int count)
-        {
-            var query = _defaultDbContext.Universities.AsNoTracking();
-
-            query = query.AsNoTracking()
-                .Skip((page-1)*count)
-                .Take(count);
-
-            return await query.ToListAsync();
-        }
-
-
-        public async Task Add(UniversitetEntity universitetEntity)
+        public async Task AddAsync(UniversitetEntity universitetEntity)
         {
             await _defaultDbContext.AddAsync(universitetEntity);
             await _defaultDbContext.SaveChangesAsync();
         }
 
-        public async Task Update(UniversitetEntity UpdateEntity)
+        public async Task UpdateAsync(UniversitetEntity UpdateEntity)
         {
-
             await _defaultDbContext.Universities
                 .Where(q => q.Id == UpdateEntity.Id)
                 .ExecuteUpdateAsync(s => s
                 .SetProperty(q => q.StateProvince, UpdateEntity.StateProvince)
                 .SetProperty(q => q.webPageEntities, UpdateEntity.webPageEntities)
                 .SetProperty(q => q.domainEntities, UpdateEntity.domainEntities)
-                .SetProperty(q => q.AphaTwoCode, UpdateEntity.AphaTwoCode)
-                .SetProperty(q => q., UpdateEntity.AphaTwoCode));
-
+                .SetProperty(q => q.AphaTwoCode, UpdateEntity.AphaTwoCode));
         }
 
-        public async Task Delete(UniversitetEntity UpdateEntity)
+        public async Task DeleteAsync(UniversitetEntity UpdateEntity)
         {
-
             await _defaultDbContext.Universities
                 .Where(q => q.Id == UpdateEntity.Id)
                 .ExecuteDeleteAsync();
-
         }
 
-
-
+        public async Task<List<UniversitetEntity>> GetAllAsync(Expression<Func<UniversitetEntity, bool>> predicat)
+        {            
+            return await  defaultDbContext.Universities
+                .AsNoTracking()
+                .Where(predicat).ToListAsync() ;
+        }
     }
 }
