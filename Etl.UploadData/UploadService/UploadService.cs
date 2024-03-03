@@ -7,6 +7,7 @@ using Microsoft.VisualBasic;
 using System.Runtime.CompilerServices;
 using Etl.UploadData.Model;
 using System.Xml.Linq;
+using System.Collections.Concurrent;
 
 namespace Etl.UploadData.UploadService
 {
@@ -62,7 +63,14 @@ namespace Etl.UploadData.UploadService
             }
         }
 
-        public async IAsyncEnumerable<UniversitetEntity?> UploadData2(Uri uri, Dictionary<string, string> parameters)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public async IAsyncEnumerable<UniversitetEntity?> UploadData2(Uri uri, ConcurrentDictionary<string, string> parameters)
         {
             using (HttpClient httpClient = new HttpClient())
             {
