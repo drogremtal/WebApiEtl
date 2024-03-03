@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Etl.Core\Etl.Core.csproj" />
     <ProjectReference Include="..\Etl.DataAccess.Postgres\Etl.DataAccess.Postgres.csproj" />
+    <ProjectReference Include="..\Etl.UploadData\Etl.UploadData.csproj" />
   </ItemGroup>
 
 </Project>

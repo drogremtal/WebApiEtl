@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Etl.DataAccess.Postgres.Repository
 {
-    public class WebPageRepository
+    public class WebPageRepository : IWebPageRepository
     {
         private readonly DefaultDbContext _defaultDbContext;
         public WebPageRepository(DefaultDbContext defaultDbContext)

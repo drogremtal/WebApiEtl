@@ -1,6 +1,6 @@
 @WebApiEtl_HostAddress = http://localhost:5279
 
-GET {{WebApiEtl_HostAddress}}/weatherforecast/
+GET {{WebApiEtl_HostAddress}}/DataApi/
 Accept: application/json
 
 ###

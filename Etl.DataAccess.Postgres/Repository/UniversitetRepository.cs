@@ -20,6 +20,7 @@ namespace Etl.DataAccess.Postgres.Repository
             return await _defaultDbContext.Universities
                 .AsNoTracking()
                 .Include(q => q.domainEntities)
+                .Include(q => q.webPageEntities)
                 .ToListAsync();
         }
 
@@ -53,10 +54,19 @@ namespace Etl.DataAccess.Postgres.Repository
         }
 
         public async Task<List<UniversitetEntity>> GetAllAsync(Expression<Func<UniversitetEntity, bool>> predicat)
-        {            
-            return await  defaultDbContext.Universities
+        {
+            return await defaultDbContext.Universities
                 .AsNoTracking()
-                .Where(predicat).ToListAsync() ;
+                .Where(predicat).ToListAsync();
+        }
+
+        public async Task<List<UniversitetEntity>> GetWithDomainAsync(Expression<Func<UniversitetEntity, bool>> predicat)
+        {
+            return await defaultDbContext.Universities
+                .Include(q=>q.domainEntities)
+                .Include(q=>q.webPageEntities)
+                .AsNoTracking()
+                .Where(predicat).ToListAsync();
         }
     }
 }

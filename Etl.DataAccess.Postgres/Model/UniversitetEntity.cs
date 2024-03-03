@@ -16,6 +16,5 @@ namespace Etl.DataAccess.Postgres.Model
         public List<WebPageEntity> webPageEntities { get; set; } = [];
         public List<DomainEntity> domainEntities { get; set; } = [];
 
-
     }
 }

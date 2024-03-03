@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etl.DataAccess.Postgres", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Etl.Core", "Etl.Core\Etl.Core.csproj", "{688BB243-9BEC-45AB-AD31-070888AEE995}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Etl.UploadData", "Etl.UploadData\Etl.UploadData.csproj", "{078328E1-3537-48ED-9090-6C926235E274}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{688BB243-9BEC-45AB-AD31-070888AEE995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{688BB243-9BEC-45AB-AD31-070888AEE995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{688BB243-9BEC-45AB-AD31-070888AEE995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{078328E1-3537-48ED-9090-6C926235E274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{078328E1-3537-48ED-9090-6C926235E274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{078328E1-3537-48ED-9090-6C926235E274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{078328E1-3537-48ED-9090-6C926235E274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

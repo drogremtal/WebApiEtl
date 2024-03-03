@@ -11,7 +11,7 @@ namespace Etl.DataAccess.Postgres.Repository
         Task<List<UniversitetEntity>> GetAllAsync();
         Task<List<UniversitetEntity>> GetAllAsync(Expression<Func<UniversitetEntity, bool>> predicat);
         Task<UniversitetEntity?> GetByIdAsync(Guid id);
-        Task<List<UniversitetEntity>> GetWithDomainAsync();
+        Task<List<UniversitetEntity>> GetWithDomainAsync(Expression<Func<UniversitetEntity, bool>> predicat);
 
     }
 }

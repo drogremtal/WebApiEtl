@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Etl.DataAccess.Postgres.Repository
 {
-    public class DomainRepository
+    public class DomainRepository : IDomainRepository
     {
         private readonly DefaultDbContext _defaultDbContext;
         public DomainRepository(DefaultDbContext defaultDbContext)
@@ -19,13 +19,24 @@ namespace Etl.DataAccess.Postgres.Repository
         }
 
 
-        public async Task Add(Guid universitetId, DomainEntity domainEntity)
+        public async Task AddSingle(Guid universitetId, DomainEntity domainEntity)
         {
             var Universitet = await _defaultDbContext.Universities.FirstOrDefaultAsync(q => q.Id == universitetId) ?? throw new Exception();
 
             domainEntity.UniversitetId = universitetId;
             await _defaultDbContext.AddAsync(domainEntity);
             await _defaultDbContext.SaveChangesAsync();
+        }
+
+        public async Task AddRangeAsync(Guid universitetId, List<DomainEntity> domainEntity)
+        {
+         //   var Universitet = await _defaultDbContext.Universities.FirstOrDefaultAsync(q => q.Id == universitetId) ?? throw new Exception();
+
+            domainEntity.ForEach(q=>q.UniversitetId = universitetId);
+
+            await _defaultDbContext.AddRangeAsync(domainEntity);
+            await _defaultDbContext.SaveChangesAsync();
+
         }
 
         public async Task Update(DomainEntity domainEntity)
@@ -42,7 +53,7 @@ namespace Etl.DataAccess.Postgres.Repository
                 .Where(q => q.Id == domain.Id)
                 .ExecuteDeleteAsync();
 
-           await _defaultDbContext.SaveChangesAsync();
+            await _defaultDbContext.SaveChangesAsync();
         }
 
     }

@@ -1,6 +1,9 @@
 ﻿using Etl.Core.Interface;
 using Etl.Core.Model;
+using Etl.UploadData.UploadService;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,46 +13,48 @@ namespace WebApiEtl.Controllers
     [ApiController]
     public class DataApiController : ControllerBase
     {
-        private readonly IServiceUniveritet _serviceUniveritet;
+        private readonly IServiceUniversitet _serviceUniversitet;
+        private readonly IUploadService _uploadService;
 
-        public DataApiController(IServiceUniveritet serviceUniveritet)
+        public DataApiController(IServiceUniversitet serviceUniveritet, IUploadService uploadService)
         {
-            _serviceUniveritet = serviceUniveritet;
+            _serviceUniversitet = serviceUniveritet;
+            _uploadService = uploadService;
+
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IEnumerable<Universitet>> GetAll(string? country = null, string? name = null)
+        {
+            return await _serviceUniversitet.GetAll(country, name);
+        }
+
+        [HttpGet("{country}",  Name = "GetAllFull")]
+        public async Task<IEnumerable<Universitet>> GetAllFull(string country)
+        {
+            return await _serviceUniversitet.GetAllFull(country);
+        }
+
+        [HttpGet(Name = "StartUpload")]
+        public async Task<IAsyncEnumerable<object>> StartUpload(/*string url, string country*/)
+        {
+
+            //Uri uri = new(Uri.UnescapeDataString(url));
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //parameters.Add("country", country);
+
+            Uri uri = new Uri("http://universities.hipolabs.com/search");
+            Dictionary<string, string> parameters = new Dictionary<string, string>() { { "country", "Russian Federation" } };
+
+            var data = _uploadService.UploadData(uri, parameters);
+
+            
+
+            return data;
+
         }
 
 
-        // GET: api/<DataApiController>
-        [HttpGet]
-        public  Task<IEnumerable<Universitet>> GetAll()
-        {
-            _serviceUniveritet
-
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<DataApiController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<DataApiController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<DataApiController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<DataApiController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
+
 }
