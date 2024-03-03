@@ -30,9 +30,9 @@ namespace WebApiEtl.Controllers
         }
 
         [HttpGet("{country}",  Name = "GetAllFull")]
-        public async Task<IEnumerable<Universitet>> GetAllFull(string country)
+        public async Task<IEnumerable<Universitet>> GetAllFull(string country,string? name)
         {
-            return await _serviceUniversitet.GetAllFull(country);
+            return await _serviceUniversitet.GetAllFull(country,name);
         }
 
         [HttpGet(Name = "StartUpload")]

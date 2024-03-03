@@ -6,7 +6,7 @@ namespace Etl.Core.Interface
     {
         Task<List<Universitet>> GetAll();
         Task<List<Universitet>> GetAll(string? country, string? name);
-        Task<List<Universitet>> GetAllFull(string? country);
+        Task<List<Universitet>> GetAllFull(string? country,string name);
 
     }
 }

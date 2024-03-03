@@ -33,11 +33,11 @@ namespace Etl.Core.Service
         }
 
        
-        public async Task<List<Universitet>> GetAll(string? country, string? name)
+        public async Task<List<Universitet>> GetAll(string country, string name)
         {
             //var exp = Expression.New(typeof( Func<Universitet,bool>));
 
-            var universitets = await _universitetsRepository.GetAllAsync(q=>q.Country.Contains(country) || q.Name.Contains(name));
+            var universitets = await _universitetsRepository.GetAllAsync(q=>q.Country.Contains(country) && q.Name.Contains(name));
 
             var data = universitets.Select(q =>
               new Universitet(
@@ -54,11 +54,11 @@ namespace Etl.Core.Service
 
         }
 
-        public async Task<List<Universitet>> GetAllFull(string country)
+        public async Task<List<Universitet>> GetAllFull(string country,string name)
         {
             //var exp = Expression.New(typeof( Func<Universitet,bool>));
 
-            var universitets = await _universitetsRepository.GetWithDomainAsync(q=>q.Country == country);
+            var universitets = await _universitetsRepository.GetWithDomainAsync(q=>q.Country.Contains(country) && q.Name.Contains(name));
 
             var data = universitets.Select(q =>
               new Universitet(
