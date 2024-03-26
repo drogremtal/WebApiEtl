@@ -7,7 +7,7 @@ namespace Etl.DataAccess.Postgres.Repository
     public class UniversitetsRepository(DefaultDbContext defaultDbContext) : IUniversitetsRepository
     {
         private readonly DefaultDbContext _defaultDbContext = defaultDbContext;
-
+        private readonly object _sysRoot = new object();
         public async Task<List<UniversitetEntity>> GetAllAsync()
         {
             return await _defaultDbContext.Universities
@@ -31,26 +31,43 @@ namespace Etl.DataAccess.Postgres.Repository
 
         public async Task AddAsync(UniversitetEntity universitetEntity)
         {
-            await _defaultDbContext.AddAsync(universitetEntity);
-            await _defaultDbContext.SaveChangesAsync();
+            Monitor.Enter(_sysRoot);
+            try
+            {
+                await _defaultDbContext.AddAsync(universitetEntity);
+                await _defaultDbContext.SaveChangesAsync();
+            }
+            finally { Monitor.Exit(_sysRoot); }
         }
 
         public async Task UpdateAsync(UniversitetEntity UpdateEntity)
         {
-            await _defaultDbContext.Universities
+            Monitor.Enter(_sysRoot);
+            try
+            {
+                await _defaultDbContext.Universities
                 .Where(q => q.Id == UpdateEntity.Id)
                 .ExecuteUpdateAsync(s => s
                 .SetProperty(q => q.StateProvince, UpdateEntity.StateProvince)
                 .SetProperty(q => q.webPageEntities, UpdateEntity.webPageEntities)
                 .SetProperty(q => q.domainEntities, UpdateEntity.domainEntities)
                 .SetProperty(q => q.AphaTwoCode, UpdateEntity.AphaTwoCode));
+            }
+            finally { Monitor.Exit(_sysRoot); }
         }
 
         public async Task DeleteAsync(UniversitetEntity UpdateEntity)
         {
-            await _defaultDbContext.Universities
+            Monitor.Enter(_sysRoot);
+            try
+            {
+                await _defaultDbContext.Universities
                 .Where(q => q.Id == UpdateEntity.Id)
                 .ExecuteDeleteAsync();
+            }
+            finally { Monitor.Exit(_sysRoot); }
+
+
         }
 
         public async Task<List<UniversitetEntity>> GetAllAsync(Expression<Func<UniversitetEntity, bool>> predicat)
